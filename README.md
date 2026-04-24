@@ -1,6 +1,6 @@
 # 🏟️ Move Smart
 
-> Real-time crowd management system for large-scale sporting venues — built at a hackathon in 1.5 hours.
+> Real-time crowd management system for large-scale sporting venues — built at a google event (Agentic Premier League)
 
 ### 🔴 [Live Demo → https://smart-stadium-879007477472.us-central1.run.app](https://smart-stadium-879007477472.us-central1.run.app/)
 
