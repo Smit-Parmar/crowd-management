@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { updateGate, updateFood, postAnnouncement } from '../services/api';
 
-const LEVELS = ['low', 'medium', 'high'];
+const LEVELS = ['low', 'medium', 'high', 'closed'];
 
 const LEVEL_COLORS = {
   low: 'bg-green-500',
   medium: 'bg-yellow-500',
   high: 'bg-red-500',
+  closed: 'bg-gray-500',
 };
 
 export default function AdminPanel({ gates, food, onRefresh }) {

@@ -91,17 +91,18 @@ curl -X POST http://localhost:8000/announcement \
   -d '{"message": "Gates open in 10 minutes!"}'
 ```
 
-Valid crowd levels: `low`, `medium`, `high`
+Valid crowd levels: `low`, `medium`, `high`, `closed`
 
 ---
 
 ## Frontend Proxy
 
-The Vite dev server proxies `/api/*` requests to the backend at `localhost:8000`. The frontend code calls `/api/status` which maps to `http://localhost:8000/status`. No CORS issues in development.
+- **Dev**: Vite proxy rewrites `/api/*` → `localhost:8000/*`. Env var `VITE_API_BASE=/api` (set in `.env.development`).
+- **Prod**: React build uses `VITE_API_BASE=""` (set in `.env.production`) — same origin, no proxy needed.
 
 ---
 
-## Production Build
+## Production Build (Local)
 
 ### Frontend
 
@@ -121,19 +122,64 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 ---
 
-## Deployment (GCP)
+## Deploy to GCP Cloud Run
 
-### Backend → Cloud Run
+### Prerequisites
+
+1. [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed
+2. A GCP project with billing enabled
+3. Authenticated: `gcloud auth login`
+
+### Step-by-step
 
 ```bash
-gcloud builds submit --tag gcr.io/PROJECT_ID/backend
-gcloud run deploy backend --image gcr.io/PROJECT_ID/backend --platform managed
+# 1. Set your project
+gcloud config set project YOUR_PROJECT_ID
+
+# 2. Enable required APIs (one-time)
+gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com
+
+# 3. Deploy (builds Docker image in the cloud + deploys)
+gcloud run deploy smart-stadium \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --memory 512Mi
 ```
 
-### Frontend → Firebase Hosting
+That's it. GCP will:
+- Build the Docker image using Cloud Build
+- Push it to Artifact Registry
+- Deploy it to Cloud Run
+- Give you a URL like `https://smart-stadium-xxxxx-uc.a.run.app`
+
+### Test locally with Docker first (optional)
 
 ```bash
-cd frontend
-npm run build
-firebase deploy
+# Build
+docker build -t smart-stadium .
+
+# Run
+docker run -p 8080:8080 smart-stadium
+
+# Open http://localhost:8080
 ```
+
+### Environment variables
+
+| Variable | Where | Dev value | Prod value |
+|----------|-------|-----------|------------|
+| `VITE_API_BASE` | Frontend (build-time) | `/api` | `` (empty) |
+| `PORT` | Backend (runtime) | `8000` | `8080` (Cloud Run sets this) |
+
+### How it works in production
+
+```
+Browser → Cloud Run (port 8080)
+          ├── /status, /update/*, /announcement  → FastAPI API
+          ├── /assets/*                          → Static JS/CSS
+          └── /* (everything else)               → index.html (React SPA)
+```
+
+---

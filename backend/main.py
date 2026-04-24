@@ -4,11 +4,15 @@ Lightweight crowd management system for large-scale sporting venues.
 Tracks gate congestion, food stall wait times, and live announcements.
 """
 
+import os
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 # ---------------------------------------------------------------------------
@@ -36,8 +40,10 @@ app.add_middleware(
 
 class CrowdLevel(str, Enum):
     low = "low"
+
     medium = "medium"
     high = "high"
+    closed = "closed"
 
 
 class GateUpdate(BaseModel):
@@ -135,3 +141,25 @@ def create_announcement(payload: AnnouncementCreate) -> dict:
 def health_check() -> dict:
     """Health check endpoint."""
     return {"status": "healthy"}
+
+
+# ---------------------------------------------------------------------------
+# Static file serving (production — React build)
+# ---------------------------------------------------------------------------
+
+STATIC_DIR = Path(__file__).parent / "static"
+
+if STATIC_DIR.is_dir():
+    # Serve JS/CSS/assets from the React build
+    app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets"), name="assets")
+
+    # SPA catch-all: any non-API route serves index.html
+    @app.get("/{full_path:path}")
+    def serve_spa(request: Request, full_path: str):
+        """Serve React app for all non-API routes."""
+        # If a specific static file exists, serve it (favicon, etc.)
+        file_path = STATIC_DIR / full_path
+        if full_path and file_path.is_file():
+            return FileResponse(file_path)
+        # Otherwise serve index.html (React Router handles the rest)
+        return FileResponse(STATIC_DIR / "index.html")

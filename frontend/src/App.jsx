@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import StatusCard from './components/StatusCard';
 import Announcements from './components/Announcements';
 import AdminPanel from './components/AdminPanel';
+import StadiumMap from './components/StadiumMap';
+import NotificationToast from './components/NotificationToast';
 import { fetchStatus } from './services/api';
 
 const POLL_INTERVAL = 5000;
@@ -11,10 +13,17 @@ export default function App() {
   const [view, setView] = useState('attendee'); // 'attendee' | 'admin'
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const prevAnnouncementCount = useRef(0);
 
   const loadStatus = useCallback(async () => {
     try {
       const data = await fetchStatus();
+      // Detect new announcements and trigger notification
+      if (data.announcements?.length > prevAnnouncementCount.current && prevAnnouncementCount.current > 0) {
+        setNotification(data.announcements[0]);
+      }
+      prevAnnouncementCount.current = data.announcements?.length || 0;
       setStatus(data);
       setError(null);
       setLastUpdated(new Date().toLocaleTimeString());
@@ -32,6 +41,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Announcement notification toast */}
+      <NotificationToast
+        announcement={notification}
+        onDismiss={() => setNotification(null)}
+      />
+
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -106,6 +121,9 @@ export default function App() {
                 )}
               </div>
             </div>
+
+            {/* Stadium Map */}
+            <StadiumMap gates={status.gates} />
 
             {/* Status cards grid */}
             <div className="grid md:grid-cols-2 gap-6">

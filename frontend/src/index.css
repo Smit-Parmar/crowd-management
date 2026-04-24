@@ -9,3 +9,9 @@
 .animate-pulse-badge {
   animation: pulse-badge 2s ease-in-out infinite;
 }
+
+/* Notification progress bar shrink */
+@keyframes shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
+}

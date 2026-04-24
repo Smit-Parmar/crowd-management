@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = '/api';
+// In dev: Vite proxy rewrites /api/* → localhost:8000/*
+// In prod: same origin, no prefix needed (VITE_API_BASE="")
+const API_BASE = import.meta.env.VITE_API_BASE ?? '/api';
 
 const api = axios.create({
   baseURL: API_BASE,

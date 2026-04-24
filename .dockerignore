@@ -1,0 +1,27 @@
+# Node
+frontend/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Docs
+*.md
+.agents/
+
+# OS
+.DS_Store
+
+# Docker
+Dockerfile
+.dockerignore

@@ -17,12 +17,19 @@ const LEVEL_CONFIG = {
     label: 'High',
     priority: 2,
   },
+  closed: {
+    color: 'bg-gray-200 border-gray-400 text-gray-600',
+    dot: 'bg-gray-500',
+    label: 'Closed',
+    priority: 99,
+  },
 };
 
 function findBestOption(items) {
   let best = null;
   let bestPriority = Infinity;
   for (const [name, level] of Object.entries(items)) {
+    if (level === 'closed') continue; // skip closed items
     const priority = LEVEL_CONFIG[level]?.priority ?? 99;
     if (priority < bestPriority) {
       bestPriority = priority;
@@ -68,9 +75,10 @@ export default function StatusCard({ title, icon, items, type }) {
               )}
 
               <div className="flex items-center gap-3">
-                <span className="text-lg font-medium text-gray-700">
+                <span className={`text-lg font-medium ${level === 'closed' ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
                   {type === 'gate' ? `Gate ${name}` : name}
                 </span>
+                {level === 'closed' && <span className="text-xs text-red-500 font-bold">CLOSED</span>}
               </div>
 
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold ${config.color}`}>
