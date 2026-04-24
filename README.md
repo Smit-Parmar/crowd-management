@@ -2,7 +2,7 @@
 
 > Real-time crowd management system for large-scale sporting venues — built at a google event (Agentic Premier League)
 
-### 🔴 [Live Demo → https://smart-stadium-879007477472.us-central1.run.app](https://smart-stadium-879007477472.us-central1.run.app/)
+### 🔴 [Live Demo → https://move-smart-879007477472.us-central1.run.app/](https://move-smart-879007477472.us-central1.run.app//)
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/Frontend-React-61DAFB?logo=react)](https://react.dev/)
