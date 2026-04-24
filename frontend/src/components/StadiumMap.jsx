@@ -55,14 +55,14 @@ export default function StadiumMap({ gates }) {
   const innerRx = 150, innerRy = 120;
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+    <div className="glass-card rounded-2xl shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-4 bg-gray-50 border-b border-gray-100">
-        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-          <span className="text-2xl">🗺️</span>
+      <div className="px-5 py-4 border-b border-gray-100/60">
+        <h2 className="text-[15px] font-bold text-gray-800 flex items-center gap-2.5">
+          <span className="text-xl">🗺️</span>
           Stadium Map
         </h2>
-        <p className="text-xs text-gray-400 mt-1">Tap a gate to see crowd status</p>
+        <p className="text-[11px] text-gray-400 mt-0.5 font-medium">Live gate status with facilities</p>
       </div>
 
       <div className="p-4 flex justify-center">

@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 
 app = FastAPI(
-    title="Smart Stadium Flow",
+    title="Move Smart",
     description="Real-time crowd management for sporting venues",
     version="1.0.0",
 )

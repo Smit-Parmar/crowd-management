@@ -1,4 +1,4 @@
-# Smart Stadium Flow — Developer Setup Guide
+# Move Smart — Developer Setup Guide
 
 ## Prerequisites
 
@@ -140,7 +140,7 @@ gcloud config set project YOUR_PROJECT_ID
 gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com
 
 # 3. Deploy (builds Docker image in the cloud + deploys)
-gcloud run deploy smart-stadium \
+gcloud run deploy move-smart \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
@@ -152,16 +152,16 @@ That's it. GCP will:
 - Build the Docker image using Cloud Build
 - Push it to Artifact Registry
 - Deploy it to Cloud Run
-- Give you a URL like `https://smart-stadium-xxxxx-uc.a.run.app`
+- Give you a URL like `https://move-smart-xxxxx-uc.a.run.app`
 
 ### Test locally with Docker first (optional)
 
 ```bash
 # Build
-docker build -t smart-stadium .
+docker build -t move-smart .
 
 # Run
-docker run -p 8080:8080 smart-stadium
+docker run -p 8080:8080 move-smart
 
 # Open http://localhost:8080
 ```

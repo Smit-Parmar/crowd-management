@@ -1,6 +1,8 @@
-# 🏟️ Smart Stadium Flow
+# 🏟️ Move Smart
 
 > Real-time crowd management system for large-scale sporting venues — built at a hackathon in 1.5 hours.
+
+### 🔴 [Live Demo → https://smart-stadium-879007477472.us-central1.run.app](https://smart-stadium-879007477472.us-central1.run.app/)
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/Frontend-React-61DAFB?logo=react)](https://react.dev/)
@@ -22,7 +24,7 @@ Thousands of fans make decisions blindly, leading to bottlenecks, frustration, a
 
 ## The Solution
 
-**Smart Stadium Flow** is a lightweight, mobile-first web app that gives attendees and venue staff a shared real-time view of the stadium.
+**Move Smart** is a lightweight, mobile-first web app that gives attendees and venue staff a shared real-time view of the stadium.
 
 ### For Attendees (👤)
 - **Live gate status** — color-coded (green/yellow/red) with "★ Best" gate highlighted
@@ -155,7 +157,7 @@ gcloud config set project YOUR_PROJECT_ID
 
 gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com
 
-gcloud run deploy smart-stadium \
+gcloud run deploy move-smart \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
@@ -166,8 +168,8 @@ gcloud run deploy smart-stadium \
 Or test with Docker locally:
 
 ```bash
-docker build -t smart-stadium .
-docker run -p 8080:8080 smart-stadium
+docker build -t move-smart .
+docker run -p 8080:8080 move-smart
 # Open http://localhost:8080
 ```
 
